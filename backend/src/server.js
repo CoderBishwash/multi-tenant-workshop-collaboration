@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 
 // route imports
 const authRoutes = require("./routes/authRoutes");
+const workshopRoutes = require("./routes/workshopRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -28,6 +29,7 @@ app.get("/api/v1/health", (req, res) => {
   });
 });
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/workshops", workshopRoutes);
 
 connectDB();
 app.listen(PORT, () => {

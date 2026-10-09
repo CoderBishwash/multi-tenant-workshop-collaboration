@@ -1,5 +1,46 @@
 const mongoose = require("mongoose");
 
+const snippetSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    trim: true,
+  },
+  code: {
+    type: String,
+    required: [true, "Code is required!"],
+  },
+  language: {
+    type: String,
+    default: "javascript",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const errorSchema = new mongoose.Schema({
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  errorMessage: {
+    type: String,
+    required: true,
+  },
+  codeBlock: {
+    type: String,
+  },
+  resolved: {
+    type: Boolean,
+    default: false,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const workshopSchema = new mongoose.Schema(
   {
     title: {
@@ -32,6 +73,8 @@ const workshopSchema = new mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
+    snippets: [snippetSchema],
+    errors: [errorSchema],
   },
   {
     timestamps: true,

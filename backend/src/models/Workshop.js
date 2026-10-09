@@ -81,6 +81,14 @@ const workshopSchema = new mongoose.Schema(
   },
 );
 
+workshopSchema.index(
+  { pin: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { status: "active" },
+  },
+);
+
 const Workshop = mongoose.model("Workshop", workshopSchema);
 
 module.exports = Workshop;

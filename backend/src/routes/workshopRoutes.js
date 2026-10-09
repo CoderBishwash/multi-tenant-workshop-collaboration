@@ -11,12 +11,26 @@ const {
   endWorkshop,
   getMyArchivedWorkshops,
 } = require("../controllers/workshopController");
+const { rateLimit } = require("express-rate-limit");
 
 const router = express.Router();
 
+const joinLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  keyGenerator: (req) => req.user._id.toString(),
+  message: { message: "Too many join attempts. Try again in 15 minutes." },
+});
+
 router.get("/", getAllWorkshops);
 router.post("/", protect, authorizeRole("mentor"), createWorkshop);
-router.post("/join", protect, authorizeRole("student"), joinWorkshop);
+router.post(
+  "/join",
+  protect,
+  authorizeRole("student"),
+  joinLimiter,
+  joinWorkshop,
+);
 router.get(
   "/archive/me",
   protect,

@@ -41,6 +41,21 @@ const errorSchema = new mongoose.Schema({
   },
 });
 
+const joinRequestSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { _id: false },
+);
+
 const workshopSchema = new mongoose.Schema(
   {
     title: {
@@ -63,6 +78,11 @@ const workshopSchema = new mongoose.Schema(
       required: [true, "Pin is required!"],
       trim: true,
     },
+    approvalRequired: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     status: {
       type: String,
       required: [true, "Status is required!"],
@@ -72,6 +92,10 @@ const workshopSchema = new mongoose.Schema(
     roster: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
+    },
+    joinRequests: {
+      type: [joinRequestSchema],
+      default: [],
     },
     snippets: [snippetSchema],
     errors: [errorSchema],

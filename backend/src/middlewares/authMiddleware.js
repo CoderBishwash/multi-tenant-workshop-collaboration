@@ -33,19 +33,4 @@ const protect = async (req, res, next) => {
   }
 };
 
-const authorizeRole = (...roles) => {
-  return (req, res, next) => {
-    const checkRole = roles.includes(req.user.role);
-
-    if (!checkRole) {
-      return res.status(403).json({
-        status: "fail",
-        message: "User role not authorized!",
-      });
-    }
-
-    next();
-  };
-};
-
-module.exports = { protect, authorizeRole };
+module.exports = { protect };
